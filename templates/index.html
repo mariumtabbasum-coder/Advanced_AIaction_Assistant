@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101827">
+  <title>ActionAI – Advanced AI Assistant</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="side-head">
+      <a class="brand" href="/"><span class="brand-icon">✦</span><span>Action<span>AI</span></span></a>
+      <button class="icon-btn close-side" id="closeSide" aria-label="Close menu">✕</button>
+    </div>
+    <button class="new-chat" id="newChat">＋ <span>New chat</span></button>
+
+    <div class="side-scroll">
+      <p class="side-label">CHAT HISTORY</p>
+      <ul class="history" id="history"></ul>
+
+      <p class="side-label">AI ASSISTANT</p>
+      <div class="assistant-card">
+        <b>General intelligence</b>
+        <small>Ask anything: explanations, coding, writing, study help. Follow-ups remember the conversation.</small>
+      </div>
+
+      <p class="side-label">AVAILABLE TOOLS</p>
+      <div class="tools">
+        <div class="tool"><span>▦</span><div><b>Calculator</b><small>Percentages, multiplication, division, powers and roots.</small></div></div>
+        <div class="tool"><span>☼</span><div><b>Live Weather</b><small>Current weather for any supported city.</small></div></div>
+        <div class="tool"><span>⇄</span><div><b>Currency Converter</b><small>Live exchange-rate conversion between currencies.</small></div></div>
+        <div class="tool"><span>◷</span><div><b>Age Calculator</b><small>Exact age in years, months and days from a date of birth.</small></div></div>
+      </div>
+      <p class="tool-note">Tools run automatically. Just type your question in the chat.</p>
+    </div>
+
+    <div class="side-foot">
+      <button class="settings-btn" id="openSettings">⚙ <span>Settings</span></button>
+      <div class="status"><span class="status-dot {{ '' if configured else 'off' }}"></span>
+        <span>{{ 'AI assistant ready' if configured else 'API key missing' }}</span></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" id="openSide" aria-label="Open menu">☰</button>
+      <div class="top-brand"><span class="brand-icon sm">✦</span> Action<span class="cy">AI</span></div>
+      <div class="top-right">
+        <span class="top-pill" title="Active model"><span class="status-dot {{ '' if configured else 'off' }}"></span> {{ model }} · Tools on</span>
+        <button class="top-btn" id="newChatTop">＋ <span>New conversation</span></button>
+      </div>
+    </header>
+
+    <section class="chat-scroll" id="scroll">
+      <div class="chat-inner">
+        <div class="welcome" id="welcome">
+          <div class="welcome-icon">✦</div>
+          <p class="eyebrow">YOUR INTELLIGENT AI ASSISTANT</p>
+          <h1>Meet <span>ActionAI</span></h1>
+          <p class="welcome-copy">Your intelligent assistant for everyday questions, calculations and useful tasks.</p>
+          <div class="cap-wrap">
+            <table class="cap">
+              <thead><tr><th>Capability</th><th>What you can do</th></tr></thead>
+              <tbody>
+                <tr><td><span>▦</span> Smart Calculations</td><td>Mathematical questions, percentages, multiplication, division and more.</td></tr>
+                <tr><td><span>☼</span> Live Weather</td><td>Ask for the current weather of any supported city.</td></tr>
+                <tr><td><span>⇄</span> Currency Conversion</td><td>Convert between different currencies using live rates.</td></tr>
+                <tr><td><span>◷</span> Age Calculator</td><td>Get your exact age from your date of birth.</td></tr>
+                <tr><td><span>✦</span> General AI Assistance</td><td>General questions, explanations, coding help, writing and study support.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="welcome-hint">Type your message below to begin. ActionAI decides by itself whether to answer directly or use a tool.</p>
+        </div>
+        <div class="messages" id="messages" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <footer class="composer-wrap">
+      <div class="error-box" id="errorBox" hidden></div>
+      <form class="composer" id="chatForm">
+        <textarea id="input" rows="1" maxlength="4000" placeholder="Message ActionAI..." aria-label="Message ActionAI"></textarea>
+        <button id="stopBtn" type="button" class="stop" hidden aria-label="Stop">■</button>
+        <button id="sendBtn" type="submit" aria-label="Send message">↑</button>
+      </form>
+      <p class="disclaimer">ActionAI can make mistakes. Verify important information independently. Enter to send · Shift+Enter for a new line.</p>
+    </footer>
+  </main>
+
+  <div class="modal" id="settingsModal" hidden>
+    <div class="modal-card">
+      <h3>Settings</h3>
+      <label for="systemInput">Custom instructions <small>(optional, applies to this chat)</small></label>
+      <textarea id="systemInput" rows="5" maxlength="1500" placeholder="e.g. Explain things simply and use short answers."></textarea>
+      <div class="modal-actions">
+        <button class="btn danger" id="clearAll">Delete all chats</button>
+        <span class="grow"></span>
+        <button class="btn" id="closeSettings">Cancel</button>
+        <button class="btn primary" id="saveSettings">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
